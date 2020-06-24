@@ -70,7 +70,7 @@ void Barrier(int pos, int servo)		//Servo In (1), Servo Out (2)
 	}
 }
 
-void 7seg(int num)									//Control de display 7 segmentos con expansor I2C
+void display(int num)									//Control de display 7 segmentos con expansor I2C
 {
 	Wire.beginTransmission(7seg_addr);
 	switch(num){
