@@ -1,7 +1,7 @@
 #include <Servo.h>
 #include <Wire.h>
 
-#define 7seg_addr	0x40;
+#define 7seg_addr	0x20;
 
 #define	Open	0;
 #define Close	90;
@@ -70,28 +70,28 @@ void Barrier(int pos, int servo)		//Servo In (1), Servo Out (2)
 	}
 }
 
-void display(int num)									//Control de display 7 segmentos con expansor I2C
+void display(int num)									//Control de display 7 segmentos con expansor I2C PCF8574N
 {
 	Wire.beginTransmission(7seg_addr);
-	switch(num){
-		case 0:
-			Wire.write(b1111110);
+	switch(num){										//	   Bit: | 7 | 6  | 5 | 4 | 3 | 2 | 1 | 0 |
+		case 0:											// Segment: | a | b  | c | d | e | f | g |   |
+			Wire.write(B00000011);						//  Pin IO: | 1 | 10 | 8 | 5 | 4 | 2 | 3 |   |
 		break;
 
 		case 1:
-			Wire.write(b0110000);
+			Wire.write(B10011111);
 		break;
 
 		case 2:
-			Wire.write(b1101101);
+			Wire.write(B00100101);
 		break;
 
 		case 3:
-			Wire.write(b1111001);
+			Wire.write(B00001101);
 		break;
 
 		case 4:
-			Wire.write(b0110011);
+			Wire.write(B10011001);
 		break;
 	}
 	Wire.endTransmission()
