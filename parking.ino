@@ -101,7 +101,7 @@ int park_num(void)
 {
 	int park_cap = 0;
 	int sensor = 0;
-	int lim = 0;						//limit de sensado del CYN70
+	int lim = 30;						//limit de sensado del CYN70
 
 	sensor = analogRead(S3);
 	if(sensor <= lim)
@@ -130,4 +130,9 @@ int park_num(void)
 	return park_cap;
 
 
+}
+
+void debug(int data)
+{
+	println(data);
 }
