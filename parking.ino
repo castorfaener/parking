@@ -6,6 +6,8 @@
 #define	Open	0
 #define Close	90
 
+#define max_sens	30
+
 #define S1			A0		//Sensores a entradas analogicas
 #define S2			A1
 #define S3			A2
@@ -48,12 +50,17 @@ void setup()
 
 	Wire.begin();			//Inicializamos comunicacion I2C
 	Serial.begin(9600);		//Inicializamos comunicacion Serie
+
+	digitalWrite(Led_R_In, HIGH);			//Activamos semaforos en rojo
+	digitalWrite(Led_R_Out, HIGH);
+
+
 }
 
 
 void loop()
 {
-
+	Exit();
 }
 
 void Barrier(int pos, int servo)		//Servo In (1), Servo Out (2)
@@ -134,5 +141,23 @@ int park_num(void)
 
 void debug(int data)
 {
-	printf(data);
+	Serial.println(data);
+}
+
+
+void Exit(void)					//En pruebas
+{
+	int puls;
+	puls = digitalRead(Button_Out);
+	delay(100);
+	if(puls == LOW)
+	{
+		digitalWrite(Led_R_Out, LOW);
+		digitalWrite(Led_G_Out, HIGH);
+		S_Out.write(Open);
+	}
+
+	int sens;
+	sens = analogRead(S2);
+	if(sens<=max_sens)
 }
