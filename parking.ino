@@ -3,8 +3,8 @@
 
 #define PCF8574N_addr	0x20
 
-#define	Open	0
-#define Close	90
+#define	Open	85			//Posiciones Servos
+#define Close	5
 
 #define max_sens	30
 
@@ -14,19 +14,21 @@
 #define S4			A3
 #define S5			A4
 #define S6			A5
-#define Button_In	  12	//Botones
-#define Button_Out	11
-#define Led_G_In	  10
-#define Led_R_In	  9
-#define Led_G_Out	  8
-#define Led_R_Out	  7
+#define Button_In	  	11	//Botones
+#define Button_Out		12
+#define Led_G_In	  	10
+#define Led_R_In	  	9
+#define Led_G_Out	  	8
+#define Led_R_Out	  	7
 
 
 Servo S_In;			//Instanciamos los servos de entrada y salida
 Servo S_Out;
 
 
-int car_cap;
+int car_cap;			//Capacidad del parking
+int Enter_State = 0;	//Estado de las barreras 0 = cerrado 1 = abierto
+int Exit_State = 0;
 
 
 
@@ -53,6 +55,12 @@ void setup()
 
 	digitalWrite(Led_R_In, HIGH);			//Activamos semaforos en rojo
 	digitalWrite(Led_R_Out, HIGH);
+
+	S_Out.write(Close);
+	S_In.write(Close);
+	delay(500);
+	
+	
 
 
 }
@@ -108,7 +116,7 @@ int park_num(void)
 {
 	int park_cap = 0;
 	int sensor = 0;
-	int lim = 30;						//limit de sensado del CYN70
+	int lim = 30;						//limite de sensado del CYN70
 
 	sensor = analogRead(S3);
 	if(sensor <= lim)
@@ -152,12 +160,22 @@ void Exit(void)					//En pruebas
 	delay(100);
 	if(puls == LOW)
 	{
-		digitalWrite(Led_R_Out, LOW);
-		digitalWrite(Led_G_Out, HIGH);
-		S_Out.write(Open);
+		if(Exit_State == 0)
+		{
+			digitalWrite(Led_R_Out, LOW);
+			digitalWrite(Led_G_Out, HIGH);
+			S_Out.write(Open);
+			Exit_State = 1;
+		}
+		else if(Exit_State == 1)
+		{
+			digitalWrite(Led_R_Out, LOW);
+			digitalWrite(Led_G_Out, HIGH);
+			S_Out.write(Close);
+			Exit_State = 0;
+		}
+
+		
 	}
 
-	int sens;
-	sens = analogRead(S2);
-	if(sens<=max_sens)
 }
