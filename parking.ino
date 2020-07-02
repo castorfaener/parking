@@ -157,7 +157,7 @@ void Exit(void)					//En pruebas
 {
 	int puls;
 	puls = digitalRead(Button_Out);
-	delay(100);
+	delay(200);
 	if(puls == LOW)
 	{
 		if(Exit_State == 0)
@@ -169,10 +169,37 @@ void Exit(void)					//En pruebas
 		}
 		else if(Exit_State == 1)
 		{
-			digitalWrite(Led_R_Out, LOW);
-			digitalWrite(Led_G_Out, HIGH);
+			digitalWrite(Led_R_Out, HIGH);
+			digitalWrite(Led_G_Out, LOW);
 			S_Out.write(Close);
 			Exit_State = 0;
+		}
+
+		
+	}
+
+}
+
+void Enter(void)					//En pruebas
+{
+	int puls;
+	puls = digitalRead(Button_Out);
+	delay(200);
+	if(puls == LOW)
+	{
+		if(Enter_State == 0)
+		{
+			digitalWrite(Led_R_Out, LOW);
+			digitalWrite(Led_G_Out, HIGH);
+			S_Out.write(Open);
+			Enter_State = 1;
+		}
+		else if(Enter_State == 1)
+		{
+			digitalWrite(Led_R_Out, HIGH);
+			digitalWrite(Led_G_Out, LOW);
+			S_Out.write(Close);
+			Enter_State = 0;
 		}
 
 		
